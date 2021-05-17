@@ -1,3 +1,6 @@
+import sys
+sys.setrecursionlimit(30000)
+
 def Ackermann(m, n, method="buttomUp"):
   """ Buttom up Implementation for Ackermann Algorithm
 
@@ -30,7 +33,14 @@ def AckermannValidation(m, n):
 			raise Exception("Only zero and positive numbers")
 
 def AckermannButtomUpEvaluation(m, n):
+  """memoization Buttom up approach
+    Args:
+        m (Int) 
+        n (Int) 
 
+    Returns:
+        Int: Ackermann value
+  """
   # memoized Array to save calculated values
   lookup = [[0 for i in range(n + 1)] for j in range(m + 1)]
   for rows in range(m + 1):
@@ -59,19 +69,24 @@ def AckermannButtomUpEvaluation(m, n):
 
 
 def AckermannRecursiveEvaluation(m, n, lookup ={}):
+  """ memoization Recursive approach
+  Args:
+      m (Int) 
+      n (Int) 
+      lookup (dict, optional). Defaults to {}.
+  Raised: 
+      segmentation fault (core dumped) 
+  Returns:
+      Int: Ackermann value
+  """
   lookupIndex= (m, n)
 
-  if not lookupIndex in lookup :
-    
-    lookupPreviousRowIndex= (m, n-1)
-    lookupPreviousColumnIndex= (m - 1, 1)
+  if not lookupIndex in lookup :   
     # base case A ( 0, n ) = n + 1
     if m == 0:
       result = n + 1
-
     # base case  A ( m, 0 ) = 
     # A ( m-1, 1) [Computed already]
-
     elif n == 0  : 
       result = AckermannRecursiveEvaluation(m-1, 1, lookup)
 
@@ -81,4 +96,3 @@ def AckermannRecursiveEvaluation(m, n, lookup ={}):
     lookup[lookupIndex]  = result
 
   return lookup[lookupIndex]
-
