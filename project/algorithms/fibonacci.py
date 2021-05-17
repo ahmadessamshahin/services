@@ -1,8 +1,13 @@
+import sys
+sys.setrecursionlimit(30000)
+
 def fibonacci(number, method="iterative"):
   """ DP implementation of Fibonacci to memoization the calculated values for nutural number using iterative approach 
 
   Args:
       number (Int): zero or positive numbers
+			method (iterative | recursive)
+
 
   Raises:
       TypeError: Only integers are allowed

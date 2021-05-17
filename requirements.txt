@@ -1,3 +1,6 @@
 FLASK==2.0.0
 Werkzeug==2.0.0
 Flask-Testing==0.8.1
+sentry-sdk==1.1.0
+blinker
+Flask-Parameter-Validation==1.0.24

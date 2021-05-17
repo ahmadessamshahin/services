@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3'
 
 services: 
   backend:
@@ -14,3 +14,83 @@ services:
       - FLASK_APP=project/__init__.py
       - FLASK_DEBUG=1
       - APP_SETTINGS=project.config.DevelopmentConfig
+    
+  redis:
+    image: redis
+    container_name: redis
+
+  postgres:
+    image: 'postgres'
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DBNAME: sentry
+      POSTGRES_DBUSER: sentry
+      POSTGRES_DBPASS: sentry
+    volumes:
+     - ~/sentry/data:/var/lib/postgresql/data
+
+  sentry:
+    image: sentry
+    container_name: sentry
+    depends_on:
+     - redis
+     - postgres
+    links:
+     - redis
+     - postgres
+    ports:
+     - 9000:9000
+    environment:
+      SENTRY_SECRET_KEY: '<SECRET-KEY>'
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: postgres
+      SENTRY_DB_PASSWORD: postgres
+      SENTRY_REDIS_HOST: redis
+      # SENTRY_SERVER_EMAIL: '<FROM-EMAIL>'
+      # SENTRY_EMAIL_HOST: <EMAIL-HOST>
+      # SENTRY_EMAIL_PORT: <EMAIL-PORT>
+      # SENTRY_EMAIL_USER: '<USER-NAME>'
+      # SENTRY_EMAIL_PASSWORD: '<USER-PASSWD>'
+      # SENTRY_EMAIL_USE_TLS: 'true'
+
+  sentry-cron:
+    image: sentry
+    container_name: sentry-cron
+    depends_on:
+     - redis
+     - postgres
+    command: "sentry run cron"
+    environment:
+      SENTRY_SECRET_KEY: '<SECRET-KEY>'
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: postgres
+      SENTRY_DB_PASSWORD: postgres
+      SENTRY_REDIS_HOST: redis
+      # SENTRY_SERVER_EMAIL: '<FROM-EMAIL>'      
+      # SENTRY_EMAIL_HOST: <EMAIL-HOST>
+      # SENTRY_EMAIL_PORT: <EMAIL-PORT>
+      # SENTRY_EMAIL_USER: '<USER-NAME>'
+      # SENTRY_EMAIL_PASSWORD: '<USER-PASSWD>'
+      # SENTRY_EMAIL_USE_TLS: 'true'
+
+  sentry-worker-1:
+    image: sentry
+    container_name: sentry-worker-1
+    depends_on:
+     - redis
+     - postgres
+    command: "sentry run worker"
+    environment:
+      SENTRY_SECRET_KEY: '<SECRET-KEY>'
+      SENTRY_POSTGRES_HOST: postgres
+      SENTRY_DB_USER: postgres
+      SENTRY_DB_PASSWORD: postgres
+      SENTRY_REDIS_HOST: redis
+      # SENTRY_SERVER_EMAIL: '<FROM-EMAIL>'      
+      # SENTRY_EMAIL_HOST: <EMAIL-HOST>
+      # SENTRY_EMAIL_PORT: <EMAIL-PORT>
+      # SENTRY_EMAIL_USER: '<USER-NAME>'
+      # SENTRY_EMAIL_PASSWORD: '<USER-PASSWD>'
+      # SENTRY_EMAIL_USE_TLS: 'true'

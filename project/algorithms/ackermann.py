@@ -1,12 +1,13 @@
 import sys
 sys.setrecursionlimit(30000)
 
-def Ackermann(m, n, method="buttomUp"):
+def ackermann(m, n, method="buttomUp"):
   """ Buttom up Implementation for Ackermann Algorithm
 
   Args:
       m (Int)
       n (Int)
+			method (buttomUp | recursive)
 
   Returns:
       Int: Ackermann Evaluation

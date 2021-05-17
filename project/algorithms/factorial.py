@@ -1,4 +1,3 @@
-
 def factorial(number,method="iterative"):
 	"""
 	Args:
