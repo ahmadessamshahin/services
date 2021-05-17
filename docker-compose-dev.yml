@@ -1,0 +1,16 @@
+version: '3.4'
+
+services: 
+  backend:
+    container_name: backend
+    build: 
+      context: .
+      dockerfile: Dockerfile-dev
+    volumes: 
+      - '.:/user/src/app/.'
+    ports:
+      - 5000:5000
+    environment: 
+      - FLASK_APP=project/__init__.py
+      - FLASK_DEBUG=1
+      - APP_SETTINGS=project.config.DevelopmentConfig

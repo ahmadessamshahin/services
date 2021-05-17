@@ -1,0 +1,84 @@
+def Ackermann(m, n, method="buttomUp"):
+  """ Buttom up Implementation for Ackermann Algorithm
+
+  Args:
+      m (Int)
+      n (Int)
+
+  Returns:
+      Int: Ackermann Evaluation
+  """
+  AckermannValidation(m, n)
+  methods = {
+		"buttomUp": AckermannButtomUpEvaluation,
+    "recursive": AckermannRecursiveEvaluation,
+	}
+  return methods[method](m, n)
+
+def AckermannValidation(m, n):
+	""" Check for zero positive numbers
+	Args:
+			m (int)
+			n (int)
+	Raises:
+			TypeError: Only integers are allowed
+			Exception: Only zero and positive numbers
+	"""
+	if not type(m) is int or not type(n) is int:
+		raise TypeError("Only integers are allowed")
+	if m < 0 or n < 0:
+			raise Exception("Only zero and positive numbers")
+
+def AckermannButtomUpEvaluation(m, n):
+
+  # memoized Array to save calculated values
+  lookup = [[0 for i in range(n + 1)] for j in range(m + 1)]
+  for rows in range(m + 1):
+      for cols in range(n + 1):
+          # base case A ( 0, n ) = n + 1
+          if rows == 0:       
+              lookup[rows][cols] = cols + 1
+          # base case  A ( m, 0 ) = 
+          # A ( m-1, 1) [Computed already]
+          elif cols == 0:
+              lookup[rows][cols] = lookup[rows-1][1]
+          else:
+              # if rows and cols > 0
+              # then applying A ( m, n ) = 
+              # A ( m-1, A ( m, n-1 ) ) 
+              r = rows - 1
+              c = lookup[rows][cols-1]
+              if r == 0:    
+                  ans = c + 1
+              elif c <= n:
+                  ans = lookup[rows-1][lookup[rows][cols-1]]
+              else:
+                  ans = (c-n)*(r) + lookup[r][n]
+              lookup[rows][cols] = ans
+  return lookup[m][n]
+
+
+def AckermannRecursiveEvaluation(m, n, lookup ={}):
+  lookupIndex= (m, n)
+
+  if not lookupIndex in lookup :
+    
+    lookupPreviousRowIndex= (m, n-1)
+    lookupPreviousColumnIndex= (m - 1, 1)
+    # base case A ( 0, n ) = n + 1
+    if m == 0:
+      result = n + 1
+
+    # base case  A ( m, 0 ) = 
+    # A ( m-1, 1) [Computed already]
+
+    elif n == 0  : 
+      result = AckermannRecursiveEvaluation(m-1, 1, lookup)
+
+    else:
+      result =  AckermannRecursiveEvaluation(m - 1,  AckermannRecursiveEvaluation(m, n-1, lookup), lookup)
+  
+    lookup[lookupIndex]  = result
+
+  return lookup[lookupIndex]
+

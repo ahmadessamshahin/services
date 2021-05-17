@@ -1,0 +1,4 @@
+project/__pycache__
+project/env
+node_modules
+.husky
