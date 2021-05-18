@@ -27,7 +27,8 @@ After cloning the repository, follow the next steps to have the project's BE up 
 ## System dependencies
 
 - [Docker](https://docs.docker.com/engine/install/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Docker Compose ^1.2.4](https://docs.docker.com/compose/install/)
+- [tar]()
 
 ## Execute code
 This might take long time to install sentry onpremise
