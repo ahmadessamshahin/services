@@ -18,6 +18,9 @@ if [ $EUID -eq 0 ]; then
 		mv sentry-postgres /var/lib/docker/volumes/sentry-postgres
 		cd /opt/onpremise-${VERSION}/
 		docker-compose up -d
+		export MACHINE_IP=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
+		cd ${BASE_DIR}
+		docker-compose -f docker-compose-dev.yml up -d --build
 	fi
 
 else

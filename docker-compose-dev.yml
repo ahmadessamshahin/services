@@ -11,7 +11,7 @@ services:
     ports:
       - 5000:5000
     extra_hosts:
-      - "ahmed.sentry:192.168.1.10"
+      - "ahmed.sentry:${MACHINE_IP}"
     environment: 
       - FLASK_APP=project/__init__.py
       - FLASK_DEBUG=1
