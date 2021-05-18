@@ -1,6 +1,7 @@
 #!/bin/bash
 
-BASE_DIR=`dirname ${0}`
+BASE_DIR=`readlink -f $(dirname ${0})`
+
 if [ $EUID -eq 0 ]; then
 	VERSION=$(curl -Is https://github.com/getsentry/onpremise/releases/latest | grep location | head -n 1 | cut -d ":" -f 2- | rev | cut -d "/" -f1 | rev | tr -d '\r')
 
@@ -11,6 +12,11 @@ if [ $EUID -eq 0 ]; then
 	cd /opt/onpremise-${VERSION}/
 	/bin/bash install.sh
 	if [ $? -eq 0 ]; then
+		mv /var/lib/docker/volumes/sentry-postgres{,_orig}
+		cd ${BASE_DIR}
+		tar -xzf sentry-postgres.tar.gz
+		mv sentry-postgres /var/lib/docker/volumes/sentry-postgres
+		cd /opt/onpremise-${VERSION}/
 		docker-compose up -d
 	fi
 
