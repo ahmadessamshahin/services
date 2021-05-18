@@ -30,7 +30,8 @@ After cloning the repository, follow the next steps to have the project's BE up 
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Execute code
-
+This might take long time to install sentry onpremise
+</br>
 <mark>Skip creating user during running sentry container for the first time</mark>
 
     sudo bash install.sh
