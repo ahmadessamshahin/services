@@ -43,28 +43,30 @@ def AckermannButtomUpEvaluation(m, n):
         Int: Ackermann value
   """
   # memoized Array to save calculated values
-  lookup = [[0 for i in range(n + 1)] for j in range(m + 1)]
-  for rows in range(m + 1):
-      for cols in range(n + 1):
-          # base case A ( 0, n ) = n + 1
+  row= n+1 if(n==0 and m > 0 ) else n
+  col= m
+  lookup = [[0 for i in range(row + 1)] for j in range(col + 1)]
+  for rows in range(col + 1):
+      for cols in range(row + 1):
+          # base case A ( 0, row ) = row + 1
           if rows == 0:       
               lookup[rows][cols] = cols + 1
-          # base case  A ( m, 0 ) = 
-          # A ( m-1, 1) [Computed already]
+          # base case  A ( col, 0 ) = 
+          # A ( col-1, 1) [Computed already]
           elif cols == 0:
               lookup[rows][cols] = lookup[rows-1][1]
           else:
               # if rows and cols > 0
-              # then applying A ( m, n ) = 
-              # A ( m-1, A ( m, n-1 ) ) 
+              # then applying A ( col, row ) = 
+              # A ( col-1, A ( col, row-1 ) ) 
               r = rows - 1
               c = lookup[rows][cols-1]
               if r == 0:    
                   ans = c + 1
-              elif c <= n:
+              elif c <= row:
                   ans = lookup[rows-1][lookup[rows][cols-1]]
               else:
-                  ans = (c-n)*(r) + lookup[r][n]
+                  ans = (c-row)*(r) + lookup[r][row]
               lookup[rows][cols] = ans
   return lookup[m][n]
 
